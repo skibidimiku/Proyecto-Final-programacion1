@@ -6,8 +6,6 @@
 #include <iostream>
 #include <windows.h>
 
-#define TAM 1
-
 using namespace std;
 
 enum Tipo {Picas = 1, Corazones, Treboles, Diamantes};
@@ -46,8 +44,6 @@ void obtenerNomCar(int val, string& nombre){//se enitende que esto procesa el nu
         case 11: nombre = "J"; break;
         case 12: nombre = "Q"; break;
         case 13: nombre = "K"; break;
-        
-        
      }
 }
 
@@ -66,7 +62,6 @@ void generarCarta(int& valorSumar, int& sumTot, struct Partida* jug, int& gan ){
     int auxAs2=0;
     int valCam=0;
     
- 
     for (int i = 0; i < 2; i++){
         palo = rand()%4+1;
         val = rand()%13+1; 
@@ -76,7 +71,6 @@ void generarCarta(int& valorSumar, int& sumTot, struct Partida* jug, int& gan ){
             val = rand()%13+1; 
             jug->barjug[i].valcar=val;
         }
-        
         switch(palo){
             case 1: jug->barjug[i].hello = Picas; break;
             case 2: jug->barjug[i].hello = Corazones; break;
@@ -86,7 +80,6 @@ void generarCarta(int& valorSumar, int& sumTot, struct Partida* jug, int& gan ){
 
         string nomVal;
         obtenerNomCar(val, nomVal);
-
         switch(jug->barjug[i].hello){
             case 1: cout << "Carta generada: " << nomVal << " de Picas" << endl; break;//aqui se imprime el numero de la carta y se acompaña con su palo
             case 2: cout << "Carta generada: " << nomVal << " de Corazones" << endl; break;
@@ -124,19 +117,18 @@ void generarCarta(int& valorSumar, int& sumTot, struct Partida* jug, int& gan ){
             }
         }
 	 
-
         sumTot += valorSumar;
 
         cout << "Valor sumado: " << valorSumar << endl;
-        cout << "Total acumulado: " << sumTot << endl;
+        cout << "Total acumulado: " << sumTot << "\n" << endl;
         jug->barjug->puntj=sumTot;
 
-
-            if(jug->barjug->puntj==21){
+        if(jug->barjug->puntj==21){
                 cout << "\n--- Haz ganado ---"<<endl;
                 gan=1;
-            }
-    } 
+            
+        } 
+    }
 }
 
 void generarCartaCas(int& valorSumar, int& sumTot, struct Partidacasa* cas, int& gan, struct Partida* jug ){
@@ -213,7 +205,7 @@ void generarCartaCas(int& valorSumar, int& sumTot, struct Partidacasa* cas, int&
         sumTot += valorSumar;
 
         cout << "Valor sumado: " << valorSumar << endl;
-        cout << "Total acumulado: " << sumTot << endl;
+        cout << "Total acumulado: " << sumTot << "\n" << endl;
         cas->barcas->puntj=sumTot;
 
 
@@ -309,17 +301,16 @@ void generarCartaNueva(int& valorSumar, int& sumTot, struct Partida* jug, int& g
 	 
 
         sumTot += valorSumar;
+        jug->barjug[i].puntj=sumTot;
 
         if(sumTot<21){
             cout << "Valor sumado: " << valorSumar << endl;
-            cout << "Total acumulado: " << sumTot << endl;
+            cout << "Total acumulado: " << sumTot << "\n" << endl;
         }else if(sumTot==21){
-            cout << "\n--- Haz ganado ---";
             gan=1;
         }else{
             cout << "Valor sumado: " << valorSumar << endl;
-            cout << "Total acumulado: " << sumTot << endl;
-            cout << "\n--- Haz Perdido ---"<<endl;
+            cout << "Total acumulado: " << sumTot << "\n" << endl;
             gan=2;
         } 
     } 
@@ -412,14 +403,12 @@ void generarCartaNuevaCas(int& valorSumar, int& sumTot, struct Partidacasa* cas,
 
         if(sumTot<21){
             cout << "Valor sumado: " << valorSumar << endl;
-            cout << "Total acumulado: " << sumTot << endl;
+            cout << "Total acumulado: " << sumTot << "\n" << endl;
         }else if(sumTot==21){
-            cout << "\n--- ha ganado la casa ---";
             gan=2;
         }else{
             cout << "Valor sumado: " << valorSumar << endl;
-            cout << "Total acumulado: " << sumTot << endl;
-            cout << "\n--- Haz Perdido ---"<<endl;
+            cout << "Total acumulado: " << sumTot << "\n" << endl;
             gan=1;
         } 
     } 
@@ -432,12 +421,13 @@ void piensaIA(struct Partidacasa* cas, struct Partida* jug, int& valorSumar, int
 }
     
 
-void jugarCartas(int& SumJug, struct Partida* jug, struct Partidacasa* cas, int& SumCas){
+void jugarCartas(int& SumJug, struct Partida* jug, struct Partidacasa* cas, int& SumCas, int& gan){
     char op;
     int valorSumar;
-    int gan=0;
+    
 
     SumJug = 0;
+    gan=0;
 
     cout << "\n--- Repartiendo tus dos primeras cartas ---" << endl;
     generarCarta(valorSumar, SumJug, jug, gan);
@@ -454,11 +444,18 @@ void jugarCartas(int& SumJug, struct Partida* jug, struct Partidacasa* cas, int&
 
         if (op == 'h' || op == 'H') {
             generarCartaNueva(valorSumar, SumJug, jug, gan, cas);
-            generarCartaNuevaCas(valorSumar, SumCas, cas, gan, jug);
+            if (gan==0){
+                piensaIA(cas, jug, valorSumar, gan, SumCas);
+            }
          }else if(op == 's' || op == 'S'){
-            cout<<"¿Quieres abandonar (s/n)?";
-            cin>>op;
-            if (op == 's' || op == 'S'){
+            piensaIA(cas, jug, valorSumar, gan, SumCas);
+            if (gan==0){
+                cout<<"¿Quieres abandonar (s/n)?";
+                cin>>op;
+                if (op == 's' || op == 'S'){
+                    break;
+                }
+            }else{
                 break;
             }
          }else{
@@ -466,6 +463,28 @@ void jugarCartas(int& SumJug, struct Partida* jug, struct Partidacasa* cas, int&
          }
 
     } 
+}
+
+void declararganador(struct Partida* jug, struct Partidacasa* cas, int& gan){
+    if(gan==1 && jug->barjug->puntj==21){
+        cout << "\n Felicidades " << jug->jugador << endl;
+        cout << "--- Haz ganado por 21 ---"<<endl;
+    }else if(gan==2 && cas->barcas->puntj==21 ){
+        cout << "---Perdiste por 21 de parte de la banca ---"<<endl;
+    }else{
+        if (jug->barjug->puntj > cas->barcas->puntj && gan==1){
+            cout << "\n Felicidades " << jug->jugador << endl;
+            cout << "--- Haz ganado con un puntaje de: "<<jug->barjug->puntj<< " ---"<<endl;
+            cout << "--- Sobre el puntaje de la casa: "<<cas->barcas->puntj<< " ---"<<endl;
+        }else if (jug->barjug->puntj < cas->barcas->puntj && gan==2){
+            cout << "--- Haz perdido contra la casa con un puntaje de: "<<cas->barcas->puntj<< " ---"<<endl;
+            cout << "--- Sobre tu puntaje : "<<jug->barjug->puntj<< " ---"<<endl;
+        }else if(jug->barjug->puntj == cas->barcas->puntj || (jug->barjug->puntj>21 && cas->barcas->puntj>21)){
+            cout << "--- Haz perdido contra la casa por empate ---"<<endl;
+            cout << "--- Sus puntajes : "<<jug->barjug->puntj<< " y " << cas->barcas->puntj << " ---"<<endl;
+        }
+        
+    }
 }
 
 void generarDatosPartida(Partida* partida){
@@ -482,12 +501,14 @@ int main(){
     Partidacasa partcasa;
     int SumJug=0;
     int SumCas=0;
+    int gan=0;
 
     generarDatosPartida(&partida);
-    jugarCartas(SumJug, &partida, &partcasa, SumCas);
+    jugarCartas(SumJug, &partida, &partcasa, SumCas, gan);
 
-    cout << "\n " << partida.jugador << endl;
-    cout << "Juego terminado. Total final acumulado: " << SumJug << endl;
+    cout << "\n los resultados de:" << partida.jugador << " Son: " << endl;
+    declararganador(&partida, &partcasa, gan);
+
 
     return 0;
 }
