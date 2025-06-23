@@ -16,20 +16,12 @@ struct baraja{
     Tipo hello;
     string NomVal;
     int valcar;
-<<<<<<< Updated upstream
-=======
     int puntj=0;
->>>>>>> Stashed changes
 };
 
 struct Partida{//aqui inicia la parte para la funcion de guardae en un archivo la partida
     char jugador[50];
     char fecha[20];
-<<<<<<< Updated upstream
-    char ganador[15];
-    baraja* barjug;
-    int nca=2;
-=======
     baraja* barjug;
     int nca=2;
 };
@@ -37,7 +29,6 @@ struct Partida{//aqui inicia la parte para la funcion de guardae en un archivo l
 struct Partidacasa{//aqui inicia la parte para la funcion de guardae en un archivo la partida
     baraja* barcas;
     int nca=2;
->>>>>>> Stashed changes
 };
 
 void obtenerNomCar(int val, string& nombre){//se enitende que esto procesa el numero del enum y para poder mostrar las cartas de fugura
@@ -55,6 +46,8 @@ void obtenerNomCar(int val, string& nombre){//se enitende que esto procesa el nu
         case 11: nombre = "J"; break;
         case 12: nombre = "Q"; break;
         case 13: nombre = "K"; break;
+        
+        
      }
 }
 
@@ -66,81 +59,13 @@ void ValAs(int& val){//esta funcion manda a preguntar que valor quiere darle al 
     } while(val != 1 && val != 11);
 }
 
-<<<<<<< Updated upstream
-void generarCarta(int& valorSumar, int& sumTot, struct Partida* jug){//aqui se genera la carta, creo que aqui va la condicion de 21
-=======
 void generarCarta(int& valorSumar, int& sumTot, struct Partida* jug, int& gan ){//aqui se genera la carta, creo que aqui va la condicion de 21
->>>>>>> Stashed changes
     int palo=0; 
     int val=0; 
     int auxAs=0;
     int auxAs2=0;
     int valCam=0;
     
-<<<<<<< Updated upstream
-    if(sumTot<21){
-        for (int i = 0; i < jug->nca; i++){
-            struct baraja *cart = &(jug->barjug[i]);
-            palo = 1+rand()%(4-1+1);
-            val = 1+rand()%(13-1+1);
-
-            switch(palo){
-                case 1: cart->hello = Picas; break;
-                case 2: cart->hello = Corazones; break;
-                case 3: cart->hello = Treboles; break;
-                case 4: cart->hello = Diamantes; break;
-            }
-
-            string nomVal;
-            obtenerNomCar(val, nomVal);
-            switch(jug->barjug[i].hello){ 
-                case Picas: cout << "Carta generada: " << nomVal << " de Picas"<< endl; break;//aqui se imprime el numero de la carta y se acompaña con su palo
-                case Corazones: cout << "Carta generada: " << nomVal << " de Corazones"<< endl; break;//aqui se imprime el numero de la carta y se acompaña con su palo
-                case Treboles: cout << "Carta generada: " << nomVal << " de Treboles" << endl; break;//aqui se imprime el numero de la carta y se acompaña con su palo
-                case Diamantes: cout << "Carta generada: " << nomVal << " de Diamantes" << endl; break;//aqui se imprime el numero de la carta y se acompaña con su palo
-            }
-
-	        if(val==1){
-		        valorSumar += val;
-		        auxAs=val;
-	        }
-	
-	
-            if (auxAs == 1){
-    
-                if (val >= 11 && val <= 13){
-                    valorSumar += 10; 
-                    ValAs(valCam);
-                    auxAs2=valCam;
-                    valorSumar+= -auxAs+auxAs2;
-        
-                } else if (val >= 2 && val <= 10){
-                    valorSumar += val;
-                    ValAs(valCam);
-                    auxAs2=valCam;
-                    valorSumar=valorSumar -auxAs+ auxAs2;
-                }
-            
-            } else {
-                if (val >= 11 && val <= 13) {
-                    valorSumar = 10;
-                }else if (val >= 2 && val <= 10) {
-                    valorSumar = val;
-                }
-            }
-	 
-
-            sumTot += valorSumar;
-
-            cout << "Valor sumado: " << valorSumar << endl;
-            cout << "Total acumulado: " << sumTot << endl;
-        }
-    }
-}
-    
-
-void jugarCartas(int& SumJug, struct Partida* jug){
-=======
  
     for (int i = 0; i < 2; i++){
         palo = rand()%4+1;
@@ -508,7 +433,6 @@ void piensaIA(struct Partidacasa* cas, struct Partida* jug, int& valorSumar, int
     
 
 void jugarCartas(int& SumJug, struct Partida* jug, struct Partidacasa* cas, int& SumCas){
->>>>>>> Stashed changes
     char op;
     int valorSumar;
     int gan=0;
@@ -516,11 +440,6 @@ void jugarCartas(int& SumJug, struct Partida* jug, struct Partidacasa* cas, int&
     SumJug = 0;
 
     cout << "\n--- Repartiendo tus dos primeras cartas ---" << endl;
-<<<<<<< Updated upstream
-    generarCarta(valorSumar, SumJug, jug);
-
-    do {
-=======
     generarCarta(valorSumar, SumJug, jug, gan);
     if (gan==0){
         generarCartaCas(valorSumar, SumCas, cas, gan, jug);
@@ -530,17 +449,12 @@ void jugarCartas(int& SumJug, struct Partida* jug, struct Partidacasa* cas, int&
 
 
     while(gan==0){
->>>>>>> Stashed changes
         cout << "Hit o Stand (H/S):";
         cin >> op;
 
         if (op == 'h' || op == 'H') {
-<<<<<<< Updated upstream
-            generarCarta(valorSumar, SumJug, jug);
-=======
             generarCartaNueva(valorSumar, SumJug, jug, gan, cas);
             generarCartaNuevaCas(valorSumar, SumCas, cas, gan, jug);
->>>>>>> Stashed changes
          }else if(op == 's' || op == 'S'){
             cout<<"¿Quieres abandonar (s/n)?";
             cin>>op;
@@ -551,11 +465,7 @@ void jugarCartas(int& SumJug, struct Partida* jug, struct Partidacasa* cas, int&
             cout<<"Esta opcion no existe intente de nuevo"<<endl;
          }
 
-<<<<<<< Updated upstream
-    } while(SumJug<21);
-=======
     } 
->>>>>>> Stashed changes
 }
 
 void generarDatosPartida(Partida* partida){
@@ -569,19 +479,12 @@ void generarDatosPartida(Partida* partida){
 int main(){
     srand(time(0));
     Partida partida;
-<<<<<<< Updated upstream
-    int SumJug;
-
-    generarDatosPartida(&partida);
-    jugarCartas(SumJug, &partida);
-=======
     Partidacasa partcasa;
     int SumJug=0;
     int SumCas=0;
 
     generarDatosPartida(&partida);
     jugarCartas(SumJug, &partida, &partcasa, SumCas);
->>>>>>> Stashed changes
 
     cout << "\n " << partida.jugador << endl;
     cout << "Juego terminado. Total final acumulado: " << SumJug << endl;
